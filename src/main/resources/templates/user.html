@@ -18,7 +18,7 @@
         <span class="fw-bold" th:text="${currentUser.email}">...</span>
             <span> with roles: </span>
             <span th:each="role : ${currentUser.roles}"
-                  th:text="${role.roleName.replaceFirst('ROLE_', '')}">
+                  th:text="${role.roleName.replaceFirst('ROLE_', '  ')}">
             </span>
         </div>
     <div>

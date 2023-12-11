@@ -235,10 +235,8 @@
                                     </div>
                                 </div>
                                 <div class="container-fluid text-center bg-white">
-<!--                                    <div class="bg-white">-->
                                     <form th:method="POST" th:action="@{/admin/create}" th:object="${user}">
                                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-
                                             <div class="mb-1">
                                                 <label class="fw-bold" for="new-username">Username:</label>
                                             </div>
@@ -280,9 +278,7 @@
                                             <div>
                                                 <button type="submit" class="btn btn-success">Add new user</button>
                                             </div>
-
                                     </form>
-<!--                                    </div>-->
                                 </div>
                             </div>
                         </div>

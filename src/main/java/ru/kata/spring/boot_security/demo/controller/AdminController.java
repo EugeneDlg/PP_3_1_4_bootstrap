@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.controller;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +9,7 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,36 +24,22 @@ public class AdminController {
         this.roleService = roleService;
     }
 
-    @GetMapping(value = "/all")
-    public String getUsers(@ModelAttribute("user") User user, ModelMap modelMap) {
+    @GetMapping()
+    public String getUsers(@ModelAttribute("user") User user, ModelMap modelMap, Principal principal) {
+        Optional<User> currentUser = userService.getByUsername(principal.getName());
         List<User> users = userService.getUsers();
         List<Role> roleList = roleService.getRoles();
         modelMap.addAttribute("users", users);
         modelMap.addAttribute("roleList", roleList);
-        return "index";
-    }
-
-    @GetMapping(value = "/userdetails")
-    public String getUser(@RequestParam("id") Long id, ModelMap modelMap) {
-        Optional<User> user = userService.getByIdForUpdate(id);
-        if (user.isEmpty()) {
-            return "notfound";
-        }
-        List<Role> roleList = roleService.getRoles();
-        modelMap.addAttribute("user", user.get());
-        modelMap.addAttribute("roleList", roleList);
-        return "userdetails";
+        modelMap.addAttribute("currentUser", currentUser.orElseThrow(
+                () -> new UsernameNotFoundException("Principal user not found")));
+        return "admin";
     }
 
     @PostMapping(value = "/create")
     public String createUser(@ModelAttribute("user") User user) {
         userService.addUser(user);
-        return "complete";
-    }
-
-    @GetMapping(value = "")
-    public String adminHome() {
-        return "forward:/admin/all";
+        return "redirect:/admin";
     }
 
     @PostMapping(value = "/update")
@@ -60,7 +48,7 @@ public class AdminController {
             return "notfound";
         }
         userService.updateUser(id, user);
-        return "complete";
+        return "redirect:/admin";
     }
 
     @PostMapping(value = "/delete")
@@ -69,7 +57,6 @@ public class AdminController {
             return "notfound";
         }
         userService.deleteUser(id);
-        return "complete";
+        return "redirect:/admin";
     }
-
 }

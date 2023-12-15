@@ -141,7 +141,7 @@
                                                                                         name="roles" multiple="multiple" size="2">
                                                                                     <option th:each="r : ${roleList}"
                                                                                             th:value="${r.id}"
-                                                                                            th:text="${r.roleName}"
+                                                                                            th:text="${r.roleName.replaceFirst('ROLE_', '  ')}"
                                                                                             th:selected="${user.roles.contains(r)}">
                                                                                     </option>
                                                                                 </select>
@@ -201,7 +201,7 @@
                                                                                         name="roles" multiple="multiple" size="2" disabled>
                                                                                     <option th:each="r : ${roleList}"
                                                                                             th:value="${r.id}"
-                                                                                            th:text="${r.roleName}"
+                                                                                            th:text="${r.roleName.replaceFirst('ROLE_', '  ')}"
                                                                                             th:selected="${user.roles.contains(r)}">
                                                                                     </option>
                                                                                 </select>
@@ -269,7 +269,7 @@
                                                                 name="roles" multiple="multiple" size="2">
                                                             <option th:each="r : ${roleList}"
                                                                     th:value="${r.id}"
-                                                                    th:text="${r.roleName}">
+                                                                    th:text="${r.roleName.replaceFirst('ROLE_', '  ')}">
                                                             </option>
                                                         </select>
                                                     </div>
